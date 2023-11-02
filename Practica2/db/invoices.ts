@@ -6,8 +6,8 @@ const Schema = mongoose.Schema;
 const facturaSchema = new Schema(
   {
     client: { type: String, required: true },
-    products: { type: [], required: false, default: 0 },
-    total: { type: String, required: false },
+    products: { type: [String], required: false, default: 0 },
+    total: { type: Number, required: false },
     
   },
   { timestamps: true }

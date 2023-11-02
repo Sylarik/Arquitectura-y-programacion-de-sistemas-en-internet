@@ -1,5 +1,5 @@
 import { Request, Response } from "npm:express@4.18.2";
-import FacturaModel from "../db/products.ts";
+import FacturaModel from "../db/invoices.ts";
 
 const getFactura = async (req: Request, res: Response) => {
   try {

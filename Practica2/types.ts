@@ -13,7 +13,7 @@ export type Cliente = {
 
 export type Factura = {
   client: string;
-  products: Producto[]; //vamos a lamacenar solo las id de productos
+  products: string[]; //vamos a lamacenar solo las id de productos
   total: number;
 };
 

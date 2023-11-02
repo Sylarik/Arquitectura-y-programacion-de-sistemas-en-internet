@@ -31,16 +31,16 @@ await mongoose.connect(MONGO_URL);
 const app = express();
 app.use(express.json());
 app
-  .get("/products", getProducts) //--
+  .get("/products", getProducts) //--2
   .post("/products", addProducts) //--1
-  .delete("/delete/:id", deleteProducts)
+  .delete("/products/:id", deleteProducts) //--3
 
-  .get("/products", getCliente) //--
-  .post("/products", addCliente) //--
-  .delete("/delete/:id", deleteCliente)
+  .get("/client", getCliente) //--5
+  .post("/client", addCliente) //--4
+  .delete("/client/:id", deleteCliente) //--6
 
-  .post("/invoice", addInvoice)
-  .get("/invoice/:id", getInvoice);
+  .post("/invoice", addInvoice) //--7
+  .get("/invoice/:id", getInvoice); //--8
 
 app.listen(3000, () => {
   console.log("Server listening on port 3000");

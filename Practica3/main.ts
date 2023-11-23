@@ -13,8 +13,9 @@ import updateGest_Cliente from "./resolvers/updateGest_Cliente.ts"; //--8
 import addHipoteca from "./resolvers/addHipoteca.ts"; //--5
 import addGestor from "./resolvers/addGestor.ts"; //--7
 
-//import "./resolvers/ingresar5min.ts";
-//import "./resolvers/amortizar5min.ts";
+//operaciones extra de tiempo
+import "./resolvers/ingresar5min.ts";
+import "./resolvers/amortizar5min.ts";
 
 import { load } from "https://deno.land/std@0.204.0/dotenv/mod.ts";
 const env = await load();

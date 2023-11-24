@@ -4,16 +4,6 @@ import { GraphQLError } from "graphql";
 import { Pet } from "./types.ts";
 import  PetModel from "./db/pets.ts";
 
-// Data
-/*
-let pets: Pet[] = [
-  { id: "1", name: "Pippin", breed: "Setter" },
-  { id: "2", name: "Arwen", breed: "Labrador" },
-  { id: "3", name: "Frodo", breed: "Pointer" },
-  { id: "4", name: "Sam", breed: "Spaniel" },
-  { id: "5", name: "Merry", breed: "Poodle" },
-];
-*/
 
 // The GraphQL schema
 const typeDefs = `#graphql
@@ -23,11 +13,11 @@ const typeDefs = `#graphql
     breed: String!
   }
   type Query {
-    hello: String!
     pets: [Pet!]!
     pet(id: ID!): Pet!
   }
   type Mutation {
+    filterPet(breed: String!): [Pet!]!
     addPet(id: ID!, name: String!, breed: String!): Pet!
     deletePet(id: ID!): Pet!
     updatePet(id: ID!, name: String!, breed: String!): Pet!

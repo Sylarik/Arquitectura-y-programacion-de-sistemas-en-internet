@@ -3,7 +3,20 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { GraphQLError } from "graphql";
 import { Pet } from "./types.ts";
 import  PetModel from "./db/pets.ts";
+import mongoose from "npm:mongoose@8.0.1";
 
+import { load } from "https://deno.land/std@0.204.0/dotenv/mod.ts";
+const env = await load();
+
+const MONGO_URL = env.MONGO_URL || Deno.env.get("MONGO_URL"); //1-> busca en env /2-> archivo del sistema
+
+
+if (!MONGO_URL) {
+  console.log("No mongo URL found");
+  Deno.exit(1);
+}
+
+await mongoose.connect(MONGO_URL);
 
 // The GraphQL schema
 const typeDefs = `#graphql

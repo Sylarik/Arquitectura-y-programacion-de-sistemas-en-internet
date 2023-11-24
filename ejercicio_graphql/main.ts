@@ -8,7 +8,7 @@ import mongoose from "npm:mongoose@8.0.1";
 import { load } from "https://deno.land/std@0.204.0/dotenv/mod.ts";
 const env = await load();
 
-const MONGO_URL = env.MONGO_URL || Deno.env.get("MONGO_URL") || "mongodb+srv://sgarciag18:123@cluster0.f9boxcy.mongodb.net/graphql?retryWrites=true&w=majority"; //1-> busca en env /2-> archivo del sistema
+const MONGO_URL = env.MONGO_URL || Deno.env.get("MONGO_URL") ; //1-> busca en env /2-> archivo del sistema
 
 
 if (!MONGO_URL) {

@@ -104,7 +104,7 @@ const resolvers = {
         });
       }
 
-      await PetModel.findOneAndDelete({ _id: args.id }).exec();
+      return await PetModel.findOneAndDelete({ _id: args.id }).exec();
     },
 
     updatePet: async(_: unknown, args: { id: string; name: string}) => {

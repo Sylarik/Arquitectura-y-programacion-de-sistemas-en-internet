@@ -18,7 +18,7 @@ const typeDefs = `#graphql
   }
   type Mutation {
     filterPet(breed: String!): [Pet!]!
-    addPet(id: ID!, name: String!, breed: String!): Pet!
+    addPet(name: String!, breed: String!): Pet!
     deletePet(id: ID!): Pet!
     updatePet(id: ID!, name: String!, breed: String!): Pet!
   }
@@ -28,7 +28,7 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     pets: async ():Promise<Pet[]> => {
-      const petsModel = await PetModel.find().exec();
+      const petsModel = await PetModel.find({}).exec();
       const pets:Pet[] = petsModel.map((pet) => {
         return {
           id: pet._id.toString(),
@@ -70,16 +70,16 @@ const resolvers = {
     },
       
 
-    addPet: async(_: unknown, args: { id: string; name: string; breed: string }) => {
-      const pet = {
-        id: args.id,
-        name: args.name,
-        breed: args.breed,
-      };
+    addPet: async(_: unknown, args: { name: string; breed: string }) => {
 
-      const newPet = new PetModel({ id: args.id, name: args.id, breed: args.breed});
+      const newPet = new PetModel({  name: args.name, breed: args.breed});
       await newPet.save();
-      return pet;
+      return {
+        id: newPet._id.toString(),
+        name: newPet.name,
+        breed: newPet.breed,
+      
+      };
     },
 
     deletePet: async (_: unknown, args: { id: string }) => {

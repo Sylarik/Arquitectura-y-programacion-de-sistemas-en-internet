@@ -67,8 +67,6 @@ const resolvers = {
         };
       });
       return pets;
-      }
-      
     },
       
 
@@ -116,7 +114,9 @@ const resolvers = {
       return pet;
     },
   
-  };
+  },
+
+};
 
 const server = new ApolloServer({
   typeDefs,

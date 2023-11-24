@@ -33,7 +33,7 @@ const typeDefs = `#graphql
     filterPet(breed: String!): [Pet!]!
     addPet(name: String!, breed: String!): Pet!
     deletePet(id: ID!): Pet!
-    updatePet(id: ID!, name: String!, breed: String!): Pet!
+    updatePet(id: ID!, name: String, breed: String): Pet!
   }
 `;
 
@@ -117,14 +117,14 @@ const resolvers = {
 
       const newName = args.name;
 
-      const updatedSaldoEmisor = await PetModel.findOneAndUpdate(
+      const updatedPet = await PetModel.findOneAndUpdate(
         { _id : args.id },
         { name: newName},
         
         { new: true }
       ).exec();
 
-      return pet;
+      return updatedPet;
     },
   
   },

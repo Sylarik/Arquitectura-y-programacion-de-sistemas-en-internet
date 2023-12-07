@@ -12,9 +12,6 @@ const deleteTrabajador = async (req: Request, res: Response) => {
       return;
     }
 
-    //cuando se elimine debe eliminarse de donde este en otras cosas
-
-
     res.status(200).send("trabajador borrado");
   } catch (error) {
     res.status(404).send(error.message);

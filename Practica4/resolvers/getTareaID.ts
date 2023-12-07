@@ -5,7 +5,7 @@ import TareaIdModel from "../db/tarea.ts";
 
 const getTareaId = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;  //es lo que pones depues para bscar en google
+    const { id } = req.params;  
     const tarea = await TareaIdModel.findOne({_id: id}).populate(["trabajador", "empresa"]).exec();
     if (!tarea) {
         res.status(404).send("Tarea no encontrado");

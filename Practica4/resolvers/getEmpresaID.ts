@@ -5,7 +5,7 @@ import EmpresaIdModel from "../db/empresa.ts";
 
 const getEmpresaId = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;  //es lo que pones depues para bscar en google
+    const { id } = req.params; 
     const empresa = await EmpresaIdModel.findOne({_id: id}).populate(["tareas", "trabajadores"]).exec();
     if (!empresa) {
         res.status(404).send("Empresa no encontrado");

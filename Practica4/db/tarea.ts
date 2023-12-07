@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 const tareaSchema = new Schema(
   {
     name: { type: String, required: true},
-    estado: { type: String, enum: ESTADOS, required: true, default: ESTADOS.to_do}, //????
+    estado: { type: String, enum: ESTADOS, required: true, default: ESTADOS.to_do}, 
     trabajador: { type: Schema.Types.ObjectId, required:true, ref: "Trabajador"}, 
     empresa: { type: Schema.Types.ObjectId, required:true, ref: "Empresa" }, 
   },

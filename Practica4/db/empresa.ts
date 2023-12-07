@@ -9,8 +9,8 @@ const Schema = mongoose.Schema;
 const empresaSchema = new Schema(
   {
     name: { type: String, required: true, unique: true},
-    tareas :  { type: [Schema.Types.ObjectId], required:false, ref: "Tarea"}, //ver si funciona poner asi el array
-    trabajadores : { type: [Schema.Types.ObjectId], required:false, ref: "Trabajador" }, //ver si funciona poner asi el array
+    tareas :  { type: [Schema.Types.ObjectId], required:false, ref: "Tarea"}, 
+    trabajadores : { type: [Schema.Types.ObjectId], required:false, ref: "Trabajador" }, 
   },
   { timestamps: true }
 );
@@ -31,57 +31,6 @@ empresaSchema
     }
   );
 //----------------------------------------------------
-
-
-//-----MIDDLEWARES------------------------------------
-//antes de guardar empresa debo
-//1. comprobar que el trabajador existen
-//2. comprobar que la empresa existe
-//2. comprobar que los trabajadores no tienen empresa
-//3. comprobar que no tiene mas de 10 trabajadores
-
-//actualizar la empresa con el cliente o elimar al cliente del array de clientes
-
-
-/*
-//actulaizar el cliente con la empresa o eliminar la empresa
-empresaSchema.pre("findOneAndUpdate", async function (next) {
-  const miTrabajador = await TrabajadorModel.findOne({_id: .trabajadores}).exec();
-  if(!miTrabajador){
-    throw new Error("El trabajador no existe opjoo");
-  }
-
-  const miEmpresa = await EmpresaModel.findOne({_id: next._id}).exec();
-  if(!miEmpresa){
-    throw new Error("La empresa no existe");
-  }
-
-  if(miTrabajador.empresa){
-    throw new Error("El trabajador ya tiene empresa");
-  }
-
-  if(miEmpresa.trabajadores.length === 10){
-    throw new Error("La empresa ya tiene 10 trabajadores");
-  }
-  
-  next(); 
-});
-*/
-/*
-empresaSchema.post("findOneAndUpdate", async function (next) {
-
-  const miTrabajador = await TrabajadorModel.findOne({_id: this.trabajadores}).exec();
-  if(!miTrabajador){
-    throw new Error("El trabajador no existe");
-  }
-
-
-  miTrabajador.empresa = miEmpresa._id;
-  await miTrabajador.save();
-  
-  next(); 
-});
-*/
 
 //-----DELETE-----------------------
 empresaSchema.post("findOneAndDelete", async function (doc: EmpresaModelType) {

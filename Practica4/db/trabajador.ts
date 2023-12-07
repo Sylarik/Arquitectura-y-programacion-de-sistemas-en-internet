@@ -14,7 +14,7 @@ const trabajadorSchema = new Schema(
   { timestamps: true }
 );
 
-//------------?????
+//------------
 trabajadorSchema
   .path("tareas")
   .validate(async function (tareas: mongoose.Types.ObjectId[]) {
@@ -31,10 +31,10 @@ trabajadorSchema
   .validate(async function (empresa: mongoose.Types.ObjectId) {
     const validateEmpresa = await EmpresaModel.findOne({_id: empresa}).exec();
     if(!validateEmpresa){
-      throw new Error("La empresa no existeeeeeeeeeeeeeeee");       //va bien
+      throw new Error("La empresa no existe");       
     }
     if (validateEmpresa.trabajadores.length === 10) {
-      throw new Error("No puede tener mas de 10 trabajadores");     //va bien
+      throw new Error("No puede tener mas de 10 trabajadores");     
     }
     return true;
   }

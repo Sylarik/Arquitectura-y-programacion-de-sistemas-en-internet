@@ -7,7 +7,7 @@ const getTrabajadorId = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;  //es lo que pones depues para bscar en google
 
-    const trabajador = await TrabajadorIdModel.findOne({_id: id}).populate(["tareas", "empresa"]).exec(); //se pone como esta en el schema
+    const trabajador = await TrabajadorIdModel.findOne({_id: id}).populate(["tareas", "empresa"]).exec(); 
     if (!trabajador) {
         res.status(404).send("Trabajador no encontrado");
         return;

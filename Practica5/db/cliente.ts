@@ -23,31 +23,7 @@ const clienteSchema = new Schema(
 );
 
 
-//VALIDACIONES
-
-//Un cliente y un conductor solamente pueden tener un viaje activo
-//ver que en el array si el ultimo viaje tiene status activo, no se puede crear otro viaje
-//NO AQUI
-/* !!!!!!!!!!!!! DA ERROR AQUI !!!!!!!!!!!!!!!!!!!!!
-clienteSchema
-    .path('travels')
-    .validate(async function (travels: Viaje[]) {
-    const ultimoViaje = travels[travels.length - 1];
-    if(ultimoViaje.status == "activo"){
-        return false;
-    }
-    return true;
-    }
-);
-*/
-
-
-//Cuando borro al cliente, se borran todos sus viajes y referencias
-
-//formatos
-
-//BIEN
-//hazme una validacion q use un regex para que me compruebe si el email tiene el formato correcto
+//FORMATO EMAIL CORRECTO
 clienteSchema
     .path('email')
     .validate(async function (email: string) {
@@ -56,7 +32,7 @@ clienteSchema
         }
     );
 
-//hazme una validacion q use un regex para que me compruebe si el numero de tarjeta tiene el formato correcto
+//FORMATO NUMERO DE UNA TARJETA CORRECTA
 clienteSchema
     .path('cards.number')
     .validate(async function (number: String) {
@@ -70,7 +46,7 @@ clienteSchema
         }
     );
 
-//hazme una validacion q use un regex para que me compruebe si el cvv tiene el formato correcto
+//FORMATO CVV CORRECTO
 clienteSchema
     .path('cards.cvv')
     .validate(async function (cvv: number) {
@@ -84,7 +60,7 @@ clienteSchema
         }
     );
 
-//hazme una validacion q use un regex para que me compruebe si la fecha de expiracion tiene el formato correcto MM/YYYY
+//FORMATO FECHA MM/YYYY CORRECTO
 clienteSchema
     .path('cards.expiration')
     .validate(async function (expiration: string) {
@@ -100,8 +76,6 @@ clienteSchema.post("findOneAndDelete", async function (doc: ClienteModelType) {
     //await ConductorModel.updateMany({travels: doc._id}, {$pull: {travels: doc._id}}).exec();
 }
 );
-
-
 
 export type ClienteModelType = mongoose.Document & Omit<Cliente, "id">;
 

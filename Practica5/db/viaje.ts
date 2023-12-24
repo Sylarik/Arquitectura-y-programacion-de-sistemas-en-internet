@@ -23,11 +23,7 @@ const viajeSchema = new Schema(
 
 //VALIDACIONES
 
-
-//Un viaje solamente se puede crear, si ambos están disponibles, y el cliente tiene dinero
-// ver que en el array de los dos el ultimo viaje no es activo
-//ver que el cliente tenga el dinero minimo
-
+//Un viaje solamente se puede crear, si cliente y conductor están disponibles, y el cliente tiene dinero
 viajeSchema
     .path('client')
     .validate(async function (client: mongoose.Types.ObjectId) {
@@ -72,7 +68,8 @@ viajeSchema
 
 
 
-//MIDDLEWARES
+//MIDDLEWARES-------------------------------------------------------
+//para actualizar el saldo de cliente tras realizar el viaje 
 viajeSchema.post("save", async function (doc: ViajeModelType) {
     const cliente = await ClienteModel.findOne({_id: doc.client}).exec();
     const conductor = await ConductorModel.findOne({_id: doc.driver}).exec();
@@ -92,6 +89,8 @@ viajeSchema.post("save", async function (doc: ViajeModelType) {
 
 });
 
+//borrar de conductor y cliente los viajes antes de que se borren
+//se hace despues de que un cliente o un conductor se hayan borrado,
 viajeSchema.pre("deleteMany", async function () {
    //eliminar de conductor.travels el id de todos los viajes que se van a borrar
     const viajes = await this.model.find(this.getFilter()); // Obtener los viajes que se van a borrar

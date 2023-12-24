@@ -1,8 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { GraphQLError } from "graphql";
-//import { Pet } from "./types.ts";
-//import  PetModel from "./db/pets.ts";
 import { Cliente } from "./types.ts";
 import { Conductor } from "./types.ts";
 import { Tarjeta } from "./types.ts";
@@ -19,12 +17,10 @@ const env = await load();
 
 const MONGO_URL = env.MONGO_URL || Deno.env.get("MONGO_URL") ; //1-> busca en env /2-> archivo del sistema
 
-
 if (!MONGO_URL) {
   console.log("No mongo URL found");
   Deno.exit(1);
 }
-
 await mongoose.connect(MONGO_URL);
 
 // The GraphQL schema
@@ -60,31 +56,17 @@ const typeDefs = `#graphql
     status: String!
   }
 
-#-----------------------
-  type Pet {
-    id: ID!
-    name: String!
-    breed: String!
-  }
   type Query {
-    pets: [Pet!]!
-    pet(id: ID!): Pet!
-    #-------------
     getClientes: [Cliente!]!
     getConductores: [Conductor!]!
     getViajes: [Viaje!]!
   }
   type Mutation {
-    filterPet(breed: String!): [Pet!]!
-    addPet(name: String!, breed: String!): Pet!
-    deletePet(id: ID!): Pet!
-    updatePet(id: ID!, name: String, breed: String): Pet!
-    #----------------
     addCliente(name: String!, email: String!): Cliente!
     addConductor(name: String!, email: String!, username: String!): Conductor!
     deleteCliente(id: ID!): Cliente!
     deleteConductor(id: ID!): Conductor!
-    addTarjeta(id: String!, number: String!, cvv: Int!, expirity: String!, money: Int): Tarjeta! #igual mejor poner q devuelva el cliente
+    addTarjeta(id: String!, number: String!, cvv: Int!, expirity: String!, money: Int): Tarjeta! 
     deleteTarjeta(idc: ID!,idt: ID!): Tarjeta!
     addViaje(client: String!, driver: String!, money: Int!, distance: Int!, date: String!): Viaje!
     updateViaje(id: ID!): Viaje!
@@ -96,33 +78,6 @@ const typeDefs = `#graphql
 const resolvers = {
   //query solo va a ser para los gets
   Query: {
-    /*pets: async ():Promise<Pet[]> => {
-      const petsModel = await PetModel.find({}).exec();
-      const pets:Pet[] = petsModel.map((pet) => {
-        return {
-          id: pet._id.toString(),
-          name: pet.name,
-          breed: pet.breed,
-        };
-      });
-      return pets;
-    }, 
-
-    pet: async (_: unknown, args: { id: string }) : Promise<Pet> => {
-      const petModel = await PetModel.findOne().exec();
-      
-      if (!petModel) {
-        throw new GraphQLError(`No pet found with id ${args.id}`, {
-          extensions: { code: "NOT_FOUND" },
-        });
-      }
-      return {
-        id: petModel._id.toString(),
-        name: petModel.name,
-        breed: petModel.breed,
-      };
-    },*/
-
     getClientes: async ():Promise<Cliente[]> => {
       const clientesModel = await ClienteModel.find().exec();
       const clientes:Cliente[] = clientesModel.map((cliente) => {
@@ -172,66 +127,7 @@ const resolvers = {
 
   //mutation para los posts, put, delete
   Mutation: {
-    //filtrar por raza
-    /*filterPet: async (_: unknown, args: { breed: string }): Promise<Pet[]> => {
-      const petsModel = await PetModel.find({breed: args.breed}).exec();
-      const pets = petsModel.map((pet) => {
-        return {
-          id: pet._id.toString(),
-          name: pet.name,
-          breed: pet.breed,
-        };
-      });
-      return pets;
-    }, 
-      
-
-    addPet: async(_: unknown, args: { name: string; breed: string }) => {
-
-      const newPet = new PetModel({  name: args.name, breed: args.breed});
-      await newPet.save();
-      return {
-        id: newPet._id.toString(),
-        name: newPet.name,
-        breed: newPet.breed,
-      
-      };
-    },
-
-    deletePet: async (_: unknown, args: { id: string }) => {
-      const pet = await PetModel.findOne({ _id: args.id }).exec();
-      
-      if (!pet) {
-        throw new GraphQLError(`No pet found with id ${args.id}`, {
-          extensions: { code: "NOT_FOUND" },
-        });
-      }
-
-      return await PetModel.findOneAndDelete({ _id: args.id }).exec();
-    },
-
-    updatePet: async(_: unknown, args: { id: string; name: string}) => {
-      const pet = await PetModel.find({ _id: args.id }).exec();
-      if (!pet) {
-        throw new GraphQLError(`No pet found with id ${args.id}`, {
-          extensions: { code: "NOT_FOUND" },
-        });
-      }
-
-      const newName = args.name;
-
-      const updatedPet = await PetModel.findOneAndUpdate(
-        { _id : args.id },
-        { name: newName},
-        
-        { new: true }
-      ).exec();
-
-      return updatedPet;
-    },*/
-
-    //PROBADO METIENDO SOLO NAME Y EMAIL
-    //addCliente(name: String!, email: String!): Cliente!
+    
     addCliente: async(_: unknown, args: { name: string; email: string }) => {
         const newCliente = new ClienteModel({  name: args.name, email: args.email});
         await newCliente.save();
@@ -244,8 +140,6 @@ const resolvers = {
         };
     },
 
-    //PROBADO METINEDO SOLO NAME, EMAIL Y USERNAME
-    //addConductor(name: String!, email: String!, username: String!): Conductor!
     addConductor: async(_: unknown, args: { name: string; email: string; username: string }) => {
         const newConductor = new ConductorModel({  name: args.name, email: args.email, username: args.username});
         await newConductor.save();
@@ -258,43 +152,28 @@ const resolvers = {
         };
     },
 
-    //deleteCliente(id: ID!): Cliente!
-    //se deberá borrar en todas partes donde se borre el cliente  q se pide
     deleteCliente: async (_: unknown, args: { id: string }) => {
       const cliente = await ClienteModel.findOne({ _id: args.id }).exec();
-      
       if (!cliente) {
         throw new GraphQLError(`No cliente found with id ${args.id}`, {
           extensions: { code: "NOT_FOUND" },
         });
       }
-
       return await ClienteModel.findOneAndDelete({ _id: args.id }).exec();
-
-      //borrar en todas partes donde se borre el cliente  q se pide
-
-
     },
 
-    //deleteConductor(id: ID!): Conductor!
+   
     deleteConductor: async (_: unknown, args: { id: string }) => {
       const conductor = await ConductorModel.findOne({ _id: args.id }).exec();
-      
       if (!conductor) {
         throw new GraphQLError(`No conductor found with id ${args.id}`, {
           extensions: { code: "NOT_FOUND" },
         });
       }
-
       return await ConductorModel.findOneAndDelete({ _id: args.id }).exec();
-
-      //borrar en todas partes donde se borre el conductor  q se pide
-
     },
 
 
-    //addTarjeta(email: String!): Tarjeta!
-    //poner q el nuemro es unico
     addTarjeta: async(_: unknown, args: {id: string, number: string, cvv:number, expirity: string, money: number}) => {
       //const {number, cvv, expirity, money} = args;
 
@@ -323,8 +202,7 @@ const resolvers = {
       return newTarjeta;
     },
 
-
-    //deleteTarjeta(idc: ID!,idt: ID!): Tarjeta!
+    
     deleteTarjeta: async (_: unknown, args: { idc: string, idt: string }) => {
       const cliente = await ClienteModel.findOne({ _id: args.idc }).exec();
       if (!cliente) {
@@ -355,40 +233,22 @@ const resolvers = {
       return tarjeta;
     },
 
-    //addViaje(client: String!, driver: String!, money: Int!, distance: Int!, date: String!): Viaje!
+ 
     addViaje: async(_: unknown, args: {client: string, driver: string, money: number, distance: number, date: string}) => {
       const newViaje = new ViajeModel({  client: args.client, driver: args.driver, money: args.money, distance: args.distance, date: args.date});
-      
-      
-      //update cliente
+
       const cliente = await ClienteModel.findOne({ _id: args.client }).exec();
       if (!cliente) {
         throw new GraphQLError(`No cliente found with id ${args.client}`, {
           extensions: { code: "NOT_FOUND" },
         });
       }
-      /*
-      await ClienteModel.findOneAndUpdate(
-        { _id : args.client },
-        { $push: { travels: newViaje } },
-        { new: true }
-      ).exec();
-      */
-      
-      //update conductor
       const conductor = await ConductorModel.findOne({ _id: args.driver }).exec();
       if (!conductor) {
         throw new GraphQLError(`No conductor found with id ${args.driver}`, {
           extensions: { code: "NOT_FOUND" },
         });
       }
-      /*
-      await ConductorModel.findOneAndUpdate(
-        { _id : args.driver },
-        { $push: { travels: newViaje } },
-        { new: true }
-      ).exec();
-      */
       
       await newViaje.save();
       return {
@@ -403,8 +263,7 @@ const resolvers = {
 
     },
     
-    
-    //updateViaje(id: ID!): Viaje!
+  
     updateViaje: async(_: unknown, args: {id: string}) => {
       const viaje = await ViajeModel.findOne({ _id: args.id }).exec();
       if (!viaje) {
@@ -418,8 +277,7 @@ const resolvers = {
         { status: "finalizado"},
         { new: true }
       ).exec();
-
-
+      
       return updatedViaje;
     },
     
